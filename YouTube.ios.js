@@ -67,7 +67,10 @@ export default class YouTube extends React.Component {
     // iOS uses a YouTube iFrame under the hood. We need to create its initial params
     // for a quick and clean load. After the initial loading, props changes will interact
     // with the iframe via its instance's methods so it won't need to load the iframe again.
-    this.state = { playerParams: parsePlayerParams(props) };
+    this.state = { 
+      playerParams: parsePlayerParams(props),
+      style: {backgroundColor: 'black', width: '100%', height: '100%'} 
+    };
   }
 
   shouldComponentUpdate() {
@@ -90,6 +93,10 @@ export default class YouTube extends React.Component {
     // component know it can render any future change
     this.forceUpdate();
     this._isReady = true;
+
+    this.setState({
+      style: null
+    })
 
     if (this.props.onReady) {
       this.props.onReady(event.nativeEvent);
@@ -173,7 +180,9 @@ export default class YouTube extends React.Component {
         onChangeQuality={this._onChangeQuality}
         onChangeFullscreen={this._onChangeFullscreen}
         onProgress={this._onProgress}
-      />
+      >
+        <View style={this.state.style} />
+      </RCTYouTube >
     );
   }
 }
